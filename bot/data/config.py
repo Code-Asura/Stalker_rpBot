@@ -1,13 +1,8 @@
-import os
-import aiofiles
-
-from ujson import loads
-from dotenv import load_dotenv
 from typing import Optional
 from pydantic import SecretStr
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
-
+#TODO Настройки конфигурации
 class Settings(BaseSettings):
     token: SecretStr
     admins: int
@@ -18,22 +13,10 @@ class Settings(BaseSettings):
     custom_webhook: Optional[str]
 
     model_config = SettingsConfigDict(env_file='.env', env_file_encoding='utf-8')
+    
+#TODO Загрузчик 
+class Loader():
+    pass
 
-    @classmethod
-    def get_json(filename: str) -> list:
-        path = f"data/json/{filename}.json"
-        
-        if os.path.exists(path):
-            with aiofiles.open(path, "r", encoding="utf-8") as file:
-                return loads(file.read())
-        return []
-
-    @classmethod
-    def set_admins() -> list:
-        load_dotenv()
-
-        admins_list = os.getenv("ADMINS").split(", ")
-        admins = [int(adm) for adm in admins_list]
-        return admins
 
 config = Settings()
