@@ -1,6 +1,7 @@
 from typing import List
+
 from aiogram.filters import BaseFilter
-from aiogram.types import Message
+from aiogram.types import Message, Update
 from aiogram import Bot
 
 class Is_Admin(BaseFilter):
@@ -15,6 +16,9 @@ class Is_Admin(BaseFilter):
 
 class Is_Admin_Group(BaseFilter):
 
-    async def __call__(self, message: Message, bot: Bot):
+    async def __call__(self, message: Message, bot: Bot) -> bool:
         member = await bot.get_chat_member(message.chat.id, message.from_user.id)
-        return member.is_chat_admin()
+        if member == "ChatMemberOwner" or "ChatMemberAdministrator":
+            return True
+        else: 
+            return False
